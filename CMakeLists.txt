@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 list(APPEND packeges "utils.cpp" "utils.h")
+list(APPEND packeges "graphMaker.cpp" "graphMaker.h")
 
 add_executable(main main.cpp
         ${packeges})
