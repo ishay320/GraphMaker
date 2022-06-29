@@ -16,4 +16,12 @@ namespace utils
 std::vector<std::filesystem::directory_entry> getFilesByFilter(const std::string path, const std::vector<std::string> extensions,
                                                                const std::vector<std::string> excludes = {});
 
+/**
+ * @brief removes white spaces from the start and end also double spaces
+ *
+ * @param line
+ * @return std::string
+ */
+std::string removeWhiteSpaces(const std::string& line);
+
 } // namespace utils
