@@ -47,19 +47,20 @@ int main(int argc, char const* argv[])
     std::vector<std::filesystem::directory_entry> files = utils::getFilesByFilter(path, extensions, excludes);
 
     // Print the files and their includes
-    for (auto&& file : files)
+    std::cout << "graph TD\n";
+    for (size_t i = 0; i < files.size(); i++)
     {
-        std::cout << file.path() << '\n';
+        std::cout << "\n    " << files[i].path().filename().c_str() << '(' << files[i].path().filename().c_str() << ')' << '\n';
 
-        std::ifstream in_file{file.path()};
+        std::ifstream in_file{files[i].path()};
         std::string line; // TODO: get line number
         while (std::getline(in_file, line))
         {
             Include tmp;
             if (getInclude(line, tmp))
             {
-                std::cout << std::setw(15) << std::left << tmp.include_file;
-                std::cout << (tmp.quotation_marks ? "local file" : "system file") << '\n';
+                std::cout << "    " << files[i].path().filename().c_str() << " --> " << (tmp.quotation_marks ? "|local file|" : "|system file|")
+                          << ' ' << tmp.include_file << '\n';
             }
         }
         in_file.close();
