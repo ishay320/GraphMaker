@@ -1,12 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 
-project( GraphMaker
+project(GraphMaker
         DESCRIPTION "Creates graph of the cpp/c project"
-        VERSION     1.0 
-        # LANGUAGE    CXX 
-        )
+        VERSION 0.1
 
-set(CMAKE_CXX_STANDARD 17)     
+        # LANGUAGE    CXX
+)
+
+set(CMAKE_CXX_STANDARD 17)
+
 # set(CMAKE_VERBOSE_MAKEFILE ON)
+list(APPEND packeges "utils.cpp" "utils.h")
 
-add_executable(main main.cpp) 
+add_executable(main main.cpp
+        ${packeges})
