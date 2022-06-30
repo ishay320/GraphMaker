@@ -28,4 +28,6 @@ Creates graphs of the cpp/c project:
 ```bash
 $ sudo apt-get update
 $ sudo apt-get install -y libgbm-dev
+# sometimes needs more:
+$ sudo apt-get install libatk1.0-0 libatk-bridge2.0-0 libcups2 libxkbcommon-x11-0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libpango-1.0-0 libcairo2
 ```
