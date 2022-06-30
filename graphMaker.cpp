@@ -88,7 +88,7 @@ void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::dir
                 // From
                 out << "    " << files[i].path().filename().c_str() << " --> ";
                 // Label
-                out << (tmp.quotation_marks ? "|local file|" : "|system file|") << ' ';
+                out << (tmp.quotation_marks ? "|local|" : "|system|") << ' ';
                 // To
                 out << tmp.include_file << '\n';
             }
