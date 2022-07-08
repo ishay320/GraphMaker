@@ -8,6 +8,39 @@ Creates graphs of the cpp/c project:
 
 **this is a project in progress - its not done yet!**
 
+## Example of include graph output
+```mermaid
+graph TD
+
+    utils.h(utils.h)
+    utils.h --> |system| filesystem
+    utils.h --> |system| string
+    utils.h --> |system| vector
+
+    graphMaker.cpp(graphMaker.cpp)
+    graphMaker.cpp --> |local| graphMaker.h
+    graphMaker.cpp --> |local| utils.h
+
+    graphMaker.h(graphMaker.h)
+    graphMaker.h --> |system| filesystem
+    graphMaker.h --> |system| fstream
+    graphMaker.h --> |system| iostream
+    graphMaker.h --> |system| string
+    graphMaker.h --> |system| vector
+
+    utils.cpp(utils.cpp)
+    utils.cpp --> |local| utils.h
+
+    main.cpp(main.cpp)
+    main.cpp --> |system| filesystem
+    main.cpp --> |system| fstream
+    main.cpp --> |system| iostream
+    main.cpp --> |system| string
+    main.cpp --> |system| vector
+    main.cpp --> |local| graphMaker.h
+    main.cpp --> |local| utils.h
+```
+
 ## How to run
 
 1. install `cmake`
