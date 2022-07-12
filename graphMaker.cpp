@@ -69,10 +69,43 @@ bool getInclude(const std::string& line, Include& include)
     return had_include;
 }
 
+inline int randomInt(int low, int high) { return low + rand() % (low - high); }
+
+std::string getRandomColor()
+{
+    int color_dec = randomInt(0, 4095);
+    std::stringstream stream;
+    stream << '#' << std::setfill('0') << std::setw(3) << std::hex << color_dec;
+    std::string color(stream.str());
+    return color;
+}
+
+std::string getRandomFromList(std::vector<std::string>& list)
+{
+    int random = rand() % list.size();
+    return list[random];
+}
+
+void printLineColor(std::ostream& out, int start, int end)
+{
+    out << "\tlinkStyle ";
+    for (int i = start; i < end; i++)
+    {
+        out << i;
+        if (!(i + 1 == end))
+        {
+            out << ',';
+        }
+    }
+    out << " stroke-width:2px,fill:none,stroke:" << getRandomFromList(colors) << ";\n";
+}
+
 void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::directory_entry>& files)
 {
     // Add the graph mermaid title
     out << "graph TD\n";
+    int start = 0;
+    int end   = 0;
 
     for (size_t i = 0; i < files.size(); i++)
     {
@@ -91,6 +124,9 @@ void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::dir
                 out << (tmp.quotation_marks ? "|local|" : "|system|") << ' ';
                 // To
                 out << tmp.include_file << '\n';
+                end++;
+                printLineColor(out, start, end);
+                start = end;
             }
         }
         in_file.close();

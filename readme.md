@@ -48,7 +48,7 @@ graph TD
 1. `cd build`
 1. `cmake ..`
 1. `make`
-1. `./main <path> [exclude list] `
+1. `./graph-maker <path> [exclude list] `
 
 ## How to convert mermaid to graph
 
