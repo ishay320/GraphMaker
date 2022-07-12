@@ -55,7 +55,7 @@ graph TD
 1. install npm `sudo apt install npm`
 1. `npm install @mermaid-js/mermaid-cli`
 1. `./node_modules/.bin/mmdc -h`
-
+> example: `./node_modules/.bin/mmdc -i ./includes.txt -o includes.pdf -f` 
 ### If have an error
 
 ```bash
