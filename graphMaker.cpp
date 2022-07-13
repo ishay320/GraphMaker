@@ -124,13 +124,24 @@ void printLineColor(std::ostream& out, int start, int end)
     out << " stroke-width:2px,fill:none,stroke:" << getNextFromList(colors) << ";\n";
 }
 
-void printLineColor(std::ostream& out, const std::string& node_name)
+inline bool ends_with(std::string const& value, std::string const& ending)
+{
+    if (ending.size() > value.size())
+    {
+        return false;
+    }
+    return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
+void printNodeColor(std::ostream& out, const std::string& node_name)
 {
     if (node_name.empty())
     {
         return;
     }
-    out << "\tstyle " << node_name << " stroke:" << getNextFromList(colors, true) << ";\n";
+    bool c_type = ends_with(node_name, ".c") || ends_with(node_name, ".cpp");
+    out << "\tstyle " << node_name << " stroke-width:2px,fill:" << (c_type ? "lightgreen" : "bisque") << ",stroke:" << getNextFromList(colors, true)
+        << ";\n";
 }
 
 void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::directory_entry>& files)
@@ -154,7 +165,7 @@ void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::dir
                 // From
                 out << "    " << files[i].path().filename().c_str() << " --> ";
                 // Label
-                out << (tmp.quotation_marks ? "|local|" : "|system|") << ' ';
+                // out << (tmp.quotation_marks ? "|local|" : "|system|") << ' ';
                 // To
                 out << tmp.include_file << '\n';
                 end++;
@@ -164,7 +175,7 @@ void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::dir
         printLineColor(out, start, end);
         if (start != end)
         {
-            printLineColor(out, files[i].path().filename().string());
+            printNodeColor(out, files[i].path().filename().string());
         }
 
         start = end;
