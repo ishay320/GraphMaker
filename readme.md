@@ -9,36 +9,49 @@ Creates graphs of the cpp/c project:
 **this is a project in progress - its not done yet!**
 
 ## Example of include graph output
+
 ```mermaid
 graph TD
 
     utils.h(utils.h)
-    utils.h --> |system| filesystem
-    utils.h --> |system| string
-    utils.h --> |system| vector
+    utils.h --> filesystem
+    utils.h --> string
+    utils.h --> vector
+	linkStyle 0,1,2 stroke-width:2px,fill:none,stroke:blue;
+	style utils.h stroke-width:2px,fill:bisque,stroke:blue;
 
     graphMaker.cpp(graphMaker.cpp)
-    graphMaker.cpp --> |local| graphMaker.h
-    graphMaker.cpp --> |local| utils.h
+    graphMaker.cpp --> graphMaker.h
+    graphMaker.cpp --> utils.h
+	linkStyle 3,4 stroke-width:2px,fill:none,stroke:black;
+	style graphMaker.cpp stroke-width:2px,fill:lightgreen,stroke:black;
 
     graphMaker.h(graphMaker.h)
-    graphMaker.h --> |system| filesystem
-    graphMaker.h --> |system| fstream
-    graphMaker.h --> |system| iostream
-    graphMaker.h --> |system| string
-    graphMaker.h --> |system| vector
+    graphMaker.h --> filesystem
+    graphMaker.h --> fstream
+    graphMaker.h --> iostream
+    graphMaker.h --> string
+    graphMaker.h --> vector
+	linkStyle 5,6,7,8,9 stroke-width:2px,fill:none,stroke:silver;
+	style graphMaker.h stroke-width:2px,fill:bisque,stroke:silver;
 
     utils.cpp(utils.cpp)
-    utils.cpp --> |local| utils.h
+    utils.cpp --> utils.h
+    utils.cpp --> iostream
+    utils.cpp --> string.h
+	linkStyle 10,11,12 stroke-width:2px,fill:none,stroke:red;
+	style utils.cpp stroke-width:2px,fill:lightgreen,stroke:red;
 
     main.cpp(main.cpp)
-    main.cpp --> |system| filesystem
-    main.cpp --> |system| fstream
-    main.cpp --> |system| iostream
-    main.cpp --> |system| string
-    main.cpp --> |system| vector
-    main.cpp --> |local| graphMaker.h
-    main.cpp --> |local| utils.h
+    main.cpp --> filesystem
+    main.cpp --> fstream
+    main.cpp --> iostream
+    main.cpp --> string
+    main.cpp --> vector
+    main.cpp --> graphMaker.h
+    main.cpp --> utils.h
+	linkStyle 13,14,15,16,17,18,19 stroke-width:2px,fill:none,stroke:purple;
+	style main.cpp stroke-width:2px,fill:lightgreen,stroke:purple;
 ```
 
 ## How to run
@@ -55,7 +68,8 @@ graph TD
 1. install npm `sudo apt install npm`
 1. `npm install @mermaid-js/mermaid-cli`
 1. `./node_modules/.bin/mmdc -h`
-> example: `./node_modules/.bin/mmdc -i ./includes.txt -o includes.pdf -f` 
+   > example: `./node_modules/.bin/mmdc -i ./includes.txt -o includes.pdf -f`
+
 ### If have an error
 
 ```bash
