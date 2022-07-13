@@ -86,6 +86,17 @@ std::string getRandomFromList(std::vector<std::string>& list)
     return list[random];
 }
 
+std::string getNextFromList(std::vector<std::string>& list)
+{
+    static int pos = 0;
+    if (pos >= list.size())
+    {
+        pos = 0;
+    }
+
+    return list[pos++];
+}
+
 void printLineColor(std::ostream& out, int start, int end)
 {
     if (start >= end)
@@ -101,7 +112,7 @@ void printLineColor(std::ostream& out, int start, int end)
             out << ',';
         }
     }
-    out << " stroke-width:2px,fill:none,stroke:" << getRandomFromList(colors) << ";\n";
+    out << " stroke-width:2px,fill:none,stroke:" << getNextFromList(colors) << ";\n";
 }
 
 void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::directory_entry>& files)
