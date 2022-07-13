@@ -69,10 +69,87 @@ bool getInclude(const std::string& line, Include& include)
     return had_include;
 }
 
+inline int randomInt(int low, int high) { return low + rand() % (low - high); }
+
+std::string getRandomColor()
+{
+    int color_dec = randomInt(0, 4095);
+    std::stringstream stream;
+    stream << '#' << std::setfill('0') << std::setw(3) << std::hex << color_dec;
+    std::string color(stream.str());
+    return color;
+}
+
+std::string getRandomFromList(std::vector<std::string>& list)
+{
+    int random = rand() % list.size();
+    return list[random];
+}
+
+std::string getNextFromList(std::vector<std::string>& list, bool get_last = false)
+{
+    static int pos = 0;
+    if (pos >= list.size())
+    {
+        pos = 0;
+    }
+    if (get_last)
+    {
+        if (pos - 1 < 0)
+        {
+            return list[list.size() - 1];
+        }
+
+        return list[pos - 1];
+    }
+
+    return list[pos++];
+}
+
+void printLineColor(std::ostream& out, int start, int end)
+{
+    if (start >= end)
+    {
+        return;
+    }
+    out << "\tlinkStyle ";
+    for (int i = start; i < end; i++)
+    {
+        out << i;
+        if (!(i + 1 == end))
+        {
+            out << ',';
+        }
+    }
+    out << " stroke-width:2px,fill:none,stroke:" << getNextFromList(colors) << ";\n";
+}
+
+inline bool ends_with(std::string const& value, std::string const& ending)
+{
+    if (ending.size() > value.size())
+    {
+        return false;
+    }
+    return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+}
+
+void printNodeColor(std::ostream& out, const std::string& node_name)
+{
+    if (node_name.empty())
+    {
+        return;
+    }
+    bool c_type = ends_with(node_name, ".c") || ends_with(node_name, ".cpp");
+    out << "\tstyle " << node_name << " stroke-width:2px,fill:" << (c_type ? "lightgreen" : "bisque") << ",stroke:" << getNextFromList(colors, true)
+        << ";\n";
+}
+
 void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::directory_entry>& files)
 {
     // Add the graph mermaid title
     out << "graph TD\n";
+    int start = 0;
+    int end   = 0;
 
     for (size_t i = 0; i < files.size(); i++)
     {
@@ -88,11 +165,20 @@ void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::dir
                 // From
                 out << "    " << files[i].path().filename().c_str() << " --> ";
                 // Label
-                out << (tmp.quotation_marks ? "|local|" : "|system|") << ' ';
+                // out << (tmp.quotation_marks ? "|local|" : "|system|") << ' ';
                 // To
                 out << tmp.include_file << '\n';
+                end++;
             }
         }
+
+        printLineColor(out, start, end);
+        if (start != end)
+        {
+            printNodeColor(out, files[i].path().filename().string());
+        }
+
+        start = end;
         in_file.close();
     }
 }

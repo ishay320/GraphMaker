@@ -26,3 +26,10 @@ bool getInclude(const std::string& line, Include& include);
  * @param files list of all the files
  */
 void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::directory_entry>& files);
+
+std::string getRandomColor();
+
+std::string getRandomFromList(std::vector<std::string>& list);
+
+inline std::vector<std::string> colors{"blue", "black", "silver", "red",  "purple", "maroon", "fuchsia", "green",
+                                       "lime", "olive", "yellow", "navy", "gray",   "teal",   "aqua"};
