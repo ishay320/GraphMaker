@@ -1,32 +1,53 @@
 #include "utils.h"
+#include <iostream>
+#include <string.h>
 
 namespace utils
 {
+// remove / from the end
+const std::vector<std::string> fixExcludes(const std::vector<std::string> excludes)
+{
+    std::vector<std::string> fixed_excludes;
+    for (auto& exclude : excludes)
+    {
+        if (exclude.back() == '/' || exclude.back() == '\\')
+        {
+            std::string tmp{exclude};
+            tmp.pop_back();
+            fixed_excludes.push_back(tmp);
+        }
+        else
+        {
+            fixed_excludes.emplace_back(std::string(exclude));
+        }
+    }
+    return fixed_excludes;
+}
 
 std::vector<std::filesystem::directory_entry> getFilesByFilter(const std::string path, const std::vector<std::string> extensions,
                                                                const std::vector<std::string> excludes)
 {
     std::vector<std::filesystem::directory_entry> files;
-    std::filesystem::recursive_directory_iterator rdi(path);
-    for (const std::filesystem::directory_entry& entry : rdi)
+    std::filesystem::recursive_directory_iterator entry(path);
+    for (; entry != std::filesystem::recursive_directory_iterator(); ++entry)
     {
-        if (entry.is_directory())
+        if (entry->is_directory())
         {
-            for (auto&& exclude : excludes)
+            for (auto&& exclude : fixExcludes(excludes))
             {
-                if (entry.path() == exclude)
+                if (strncmp(entry->path().c_str(), exclude.c_str(), exclude.size()) == 0)
                 {
-                    rdi.disable_recursion_pending();
+                    entry.disable_recursion_pending();
                 }
             }
         }
-        else if (entry.is_regular_file())
+        else if (entry->is_regular_file())
         {
             for (const std::string& extension : extensions)
             {
-                if (entry.path().filename().extension() == extension)
+                if (entry->path().filename().extension() == extension)
                 {
-                    files.push_back(entry);
+                    files.push_back(*entry);
                 }
             }
         }
