@@ -88,6 +88,10 @@ std::string getRandomFromList(std::vector<std::string>& list)
 
 void printLineColor(std::ostream& out, int start, int end)
 {
+    if (start >= end)
+    {
+        return;
+    }
     out << "\tlinkStyle ";
     for (int i = start; i < end; i++)
     {
@@ -125,10 +129,11 @@ void printIncludeGraph(std::ostream& out, const std::vector<std::filesystem::dir
                 // To
                 out << tmp.include_file << '\n';
                 end++;
-                printLineColor(out, start, end);
-                start = end;
             }
         }
+
+        printLineColor(out, start, end);
+        start = end;
         in_file.close();
     }
 }
