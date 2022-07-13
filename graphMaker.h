@@ -31,5 +31,5 @@ std::string getRandomColor();
 
 std::string getRandomFromList(std::vector<std::string>& list);
 
-inline std::vector<std::string> colors{"blue",  "black", "silver", "red",    "purple", "white", "maroon", "fuchsia",
-                                       "green", "lime",  "olive",  "yellow", "navy",   "gray",  "teal",   "aqua"};
+inline std::vector<std::string> colors{"blue", "black", "silver", "red",  "purple", "maroon", "fuchsia", "green",
+                                       "lime", "olive", "yellow", "navy", "gray",   "teal",   "aqua"};
